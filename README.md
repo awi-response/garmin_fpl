@@ -2,8 +2,8 @@
 This repo provides scripts that facilitate the creation of flightplans compatible with the Garmin GTN750.
 The scripts have originally been created for the Perma-X Canada 2023 airborne campaign. As the focus of this campaign lay on aerial imaging, most targets were flown as grids (for later photogrammetric processing). Thus, some naming conventions and specificties within the scripts are in some ways optimized towards this kind of grid-pattern flying. Yet, they are also compatible with line-survey flights (transects).
 
-Within the GTN750, flightplans usually look something like this:
-
+Within the GTN750, (grid) flightplans usually look something like this:
+![alt text](figs/garmin_gtn750_screen_grid-fpl.png)
 
 
 ## User waypoints
