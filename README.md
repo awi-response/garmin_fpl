@@ -1,10 +1,17 @@
 # General info
 This repo provides scripts that facilitate the creation of flightplans compatible with the Garmin GTN750.
-The scripts have originally been created for the Perma-X Canada 2023 airborne campaign. As the focus of this campaign lay on aerial imaging, most targets were flown as grids (for later photogrammetric processing). Thus, some naming conventions and specificties within the scripts are in some ways optimized towards this kind of grid-pattern flying. Yet, they are also compatible with line-survey flights (transects).
+The scripts have originally been created for the Perma-X Canada 2023 airborne campaign. As the focus of this campaign lay on aerial imaging, most targets were flown as grids (for later photogrammetric processing). Thus, some naming conventions and specificties within the scripts are in some ways optimized towards this kind of grid-pattern flying. Nevertheless, they are also compatible with line-survey flights (transects).
 
-Within the GTN750, (grid) flightplans usually look something like this:
+Within the GTN750, (grid) flightplans usually look something like this (this is what the pilots see in the cockpit):
 ![alt text](figs/garmin_gtn750_screen_grid-fpl.png)
 
+This target was called *052_DeltaNorthHF_01_1000m*
+
+In order to import this flightplan into the GTN750, two files are necessary:
+- [`052_DeltaNorthHF_01_1000m_user_renamed.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed.wpt) (however, must be named `user.wpt` for import. Details see below)
+- [`052_DeltaNorthHF_01_1000m_fpl.gfp`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_fpl.gfp))
+
+The following gives some more info on characteristics and requirements for these two file types.
 
 ## User waypoints
 
@@ -12,29 +19,25 @@ To import user waypoints into the GTN750, they must be all stored in one file th
 
 - name: 'user.wpt'
 - each waypoint in this file has its own line
-- The GTN can store xxx waypoints
+- The GTN750 can store xxx waypoints
 - waypoints are defined with four columns, separated by a ','.
 The columns are:
-   - **Waypoint ID**: max. 6 alphanumeric characters (all UPPERCASE). Names can probably be used multiple times, but this is not recommended. This ID is the one that pilot will see in their maps during flight.
+   - **Waypoint ID**: max. 6 alphanumeric characters (all UPPERCASE). Names can probably be used multiple times, but this is not recommended. This ID is the one that pilot will see in their maps during flight (e.g., `05206B` in the figure above).
    - **Waypoint comment**: max. 25 alphanumeric characters (all UPPERCASE). The comment can only be seen by the pilots when looking at the list of user waypoints. Not that easy to access when actually following a flightplan. The comments do not need to be unique either.
    - **Latitude** in decimal degrees. e.g., '67.503777168'. Number of decimal places is (probably) not limited.
    - **Longitude** in decimal degrees. e.g., '-133.7815498'. Number of decimal places is (probably) not limited.
-- Waypoints cannot be closer than 0.001° to each other (111m). If this happens, the GTN750 will only import the first waypoint with 'this' coordinate 
-  and the second one, that is in the 111m-vicinity will be ignored! This is especially relevant to consider when flying survey grids --> lines need to 
-  be far enough apart._ Reason: The userwpts are only single points with a name. A FPL instead puts different coordinates into an order, but with NO name. The name of these ordered coordinates will be assigned by the closesst userwpt to that coordinate. Now here comes the problem: The FLP coordinate is in DMM format with only one decimal accuracy. Hence the name of this coordinate will come of the closest userwpt in a 0.001° radius. Closer lines can really mess up the naming of the points._
-- User waypoints that were stored in the GTN stay in there until they are manually deleted. So creating and importing waypoints (via a new user.wpt) at a later point in time, might also generate this issue. Those that are already in the GTN will not be overwritten!
+- Waypoints cannot be closer than 0.001° to each other (111m). If this happens, the GTN750 will only import the first waypoint with 'this' coordinate; the second one that is in the 111m-vicinity will be ignored!
+This is especially relevant to consider when flying survey grids --> lines need to be far enough apart._ Reason: The user waypoints (as defined in the `user.wpt` are only single points with a name (the ID from the first columm).
+A flightplan instead puts different coordinates into an order, but with NO name. The name of these ordered coordinates will be assigned by the closesst user waypiont which was imported from the `user.wpt` to that coordinate.
+Now here comes the problem: The FLP coordinate is in DMM format with only one decimal accuracy. Hence the name of this coordinate will be defined by the closest user waypoint in the 0.001°-radius. Closer lines can really mess up the naming of the points._
+- User waypoints that were stored in the GTN750 stay in there until they are manually deleted. So creating and importing waypoints (via a new `user.wpt`) at a later point in time, might also generate this issue. Those that are already in the GTN750 will not be overwritten!
 NOTE: The distance value of 0.001°/111 m was taken from the GTN750 manual. However, we already faced some issues with points that were 160 m apart. So be careful.
-Practical Implications:
-   - It is not possible to upload flightplans of an identical area with different height settings to account for high/low cloud ceiling
+Some practical implications of this issue:
+   - It is not possible to upload flightplans of an identical area with different flight altitude settings to e.g., spontaneously account for higher/lower cloud ceiling, footprint size...
    - It is not possible to upload overlapping flightplans if the final linespacing is lower than 0.001°
-   - Remove all existing user waypoints after each flight day to avoid issues with identical name / too close waypoints.
-- the order of the waypoints is not important
-- example user.wpt:
-`03712A,037DTTSIIGEHTCHIC020750M12A,67.491477146,-133.87411029
-03712B,037DTTSIIGEHTCHIC020750M12B,67.489548245,-133.65816177
-03801A,038LARCHESINUVIK011000M01A,67.914663523,-133.62897633
-03801B,038LARCHESINUVIK011000M01B,67.914663523,-133.45728749
-03802A,038LARCHESINUVIK011000M02A,67.906953613,-133.4572875`
+   - If you need to implement one of the above options: remove all existing user waypoints and flightplans and reimport a new `user.wpt` and new flightplans that only contain the 'new' altitude, ...
+   - General recommendation: remove all existing user waypoints after each flight day to avoid issues with identical name / too close waypoints.
+- the order of the waypoints in the `user.wpt` is not important
 
 ## Flightplans
 
@@ -49,23 +52,28 @@ For the GTN750 to be able to read prepared flightplans, they must fulfil certain
      - Lat prefaced with N or S; followed by exactly five digits in DMM: 67° 30.2' N becomes N67302
      - Lon prefaced with E or W; followed by exactly six digits in DMM: 133° 46.9' W becomes W133469
 - .gfp-file is allowed to have only one line! The entire flightplan needs to be in this long line. Make sure, there is no empty new line.
-- NOTE: the import of a .gfp file created in a unix operating system failed, only windows worked. (Line ending problem?)
+- NOTE: For us, the import of a .gfp-file created on a unix operating system failed, only Windows worked. (Line ending problem?)
+- You can have multiple .gfp-files (each correesponding to a different flightplan), or you can combine all your waypoints into one large flightplan. (For grid-survey flights, we had a flightplan per target of interest.)
 - all .gfp-files need to be collected in one folder named 'FPL'
 - The GTN750 can store up to 100 flightplans (?) --> this needs to be verified.
-- there are possibilities to add more complex information to the flightplan (e.g. airports, runways, landing approaches, etc... --> see manual), but generally not necessary. (the simpler, the better ;) )
+- there are possibilities to add more complex information to the flightplan (e.g., airports, runways, landing approaches, etc... --> see manual), but this is generally not necessary. (the simpler, the better ;) )
 
-The coordinates of a .gfp-file do not have names/IDs. If you import a .gfp-file to the GTN750 without previously importing the exact user waypoints first, the system will give these coordinates a generic ID along the lines of USR001, USR002, etc... 
-If you want to avoid this, make sure that the user waypoints are imported before the flightplans are (the .gfp-files).
+**As mentioned above: The coordinates of a .gfp-file do not have names/IDs. If you import a .gfp-file to the GTN750 without previously importing the `user.wpt` with waypoints of the corresponding coordinates  first, the system will give these coordinates a generic ID along the lines of USR001, USR002, etc... Hint: Some pilots do not like this, as all their waypoints in the GTN750 will have the same names).
+If you want to avoid this, make sure that the user waypoints are imported before the flightplans are (the .gfp-files).**
 
-Importing the flightplans to the Garmin:
-1) import user.wpt first
-2) import the flightplans
+# How to create flightplans for the GTN750
+The main gist of the code presented here, is the automated creation of said .gfp-files from the `user.wpt`s.
 
-Explanantion: see above
+If you are using the MACS-Missionplanner to prepare your flightplans, you should follow these steps:
+1. create/open your flightplan in the [MACS-Missionplanner Software by DLR](https://macs.dlr.de/box)
+![alt text](figs/macs-missionplanner_052.png)
+2. File > Export > Garmin GTN Waypoint > Save as ["052_DeltaNorthHF_01_1000m_user.wpt"](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user.wpt)
+   - As a requirement for our scripts, there should be a 3-digit-ID (here: "052") in the beginning and "_user" at the end of this file name.
+3. TODO: Update, once final.
 
-The script '01_xxx' reads all '*_user.wpt'-files in a directory and creates a flightplan for each of them. The new name is then '*_fpl.gfp'.
-Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were 
-in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. 
+More notes:
+The script `01_xxx` reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
+Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. 
 If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.
 When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints
 and creating unique IDs and comments.
