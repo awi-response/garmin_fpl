@@ -22,7 +22,7 @@ def convert2stringLon(val):
         deg = abs(deg) # remove minus sign
     else:
         EastWest = 'E'
-    return(EastWest+str(deg)+'d'+str(min)+"m")
+    return('{:1}{:02d}d{:04.1f}m'.format(EastWest,deg,min))
 
 def convert2stringLat(val):
     #function to convert Latitude to string with S/N indicator and d/m as deg and minute sign
@@ -34,7 +34,7 @@ def convert2stringLat(val):
         deg = abs(deg) # remove minus sign
     else:
         NorthSouth = 'N'
-    return(NorthSouth+str(deg)+'d'+str(min)+"m")
+    return('{:1}{:02d}d{:04.1f}m'.format(NorthSouth,deg,min))
 
 def dec2dmm(fname):
     # function to read in wpt file as exported by MACS, converts DECDeg to DMM, and save it back
@@ -43,7 +43,6 @@ def dec2dmm(fname):
 
     lat = list(map(decimal_degrees_to_dmm, f.iloc[:,2]))
     lon = list(map(decimal_degrees_to_dmm, f.iloc[:,3]))
-    print("hier")
 
     lon = list(map(convert2stringLon,lon))
     lat = list(map(convert2stringLat,lat))
@@ -54,5 +53,4 @@ def dec2dmm(fname):
 
 if __name__ == '__main__':
     fname = sys.argv[1]
-    print(f'dec2dmm input {fname}')
     dec2dmm(fname)
