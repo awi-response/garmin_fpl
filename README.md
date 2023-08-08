@@ -1,4 +1,12 @@
-##User waypoints
+# General info
+This repo provides scripts that facilitate the creation of flightplans compatible with the Garmin GTN750.
+The scripts have originally been created for the Perma-X Canada 2023 airborne campaign. As the focus of this campaign lay on aerial imaging, most targets were flown as grids (for later photogrammetric processing). Thus, some naming conventions and specificties within the scripts are in some ways optimized towards this kind of grid-pattern flying. Yet, they are also compatible with line-survey flights (transects).
+
+Within the GTN750, flightplans usually look something like this:
+
+
+
+## User waypoints
 
 To import user waypoints into the GTN750, they must be all stored in one file that fulfills the following requirements:
 
@@ -22,13 +30,13 @@ Practical Implications:
    - Remove all existing user waypoints after each flight day to avoid issues with identical name / too close waypoints.
 - the order of the waypoints is not important
 - example user.wpt:
-03712A,037DTTSIIGEHTCHIC020750M12A,67.491477146,-133.87411029
+`03712A,037DTTSIIGEHTCHIC020750M12A,67.491477146,-133.87411029
 03712B,037DTTSIIGEHTCHIC020750M12B,67.489548245,-133.65816177
 03801A,038LARCHESINUVIK011000M01A,67.914663523,-133.62897633
 03801B,038LARCHESINUVIK011000M01B,67.914663523,-133.45728749
-03802A,038LARCHESINUVIK011000M02A,67.906953613,-133.4572875
+03802A,038LARCHESINUVIK011000M02A,67.906953613,-133.4572875`
 
-##Flightplans
+## Flightplans
 
 For the GTN750 to be able to read prepared flightplans, they must fulfil certain (format) requirements:
 - stored as .gfp (Garmin flightplan)
