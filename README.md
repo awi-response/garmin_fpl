@@ -77,10 +77,10 @@ reads all `*_user.wpt`-files in a directory and creates a flightplan for each of
 it is based on these steps:
 
 **1. 20230704_WPnameChanger.py:**
+
 Background: Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named FLll_A/FLll_B (ll being linenumber) e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file. The comments are based on the names visible in this upper left panel. Careful, this comments do not change the order of the flightlines. The waypoint name (FLll_A/FLll_B) is automatically derived by the **display** order of the flightlines.  HENCE: when exporting the mission, the IDs will start at FL01_A, independent on changed or adapted names. Make sure to order the lines correspondingly in the MACS mission planner so the displayed order matches the order of flightlines. When importing many different targets into the GTN, the identical naming of lightlines will become very confusing. It complicates the communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
 
-This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
-the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
+This script does that job for you: It creates an intermediate file ('* _user_renamed.wpt') for each mission, where the ID and comment are updated based on the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
 ***iii_sitename_user.wpt*** --> iii being an internally discussed 3 digit ID of the target area.
 
@@ -96,23 +96,28 @@ Please stick to the following waypoint naming conventions when not working with 
             - 'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
             
 The waypoint comments will changed to: 
+
 ***iiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
 input: iii_sitename_user.wpt
 output: iii_sitename_user_renamed.wpt
 
 **2. 20230704_DEC2DMM.py**: 
+
 Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
     - input: the output file of 20230704_WPnameChange.py:  iii_sitename_user_renamed.wpt
     - output: iii_sitename_user_renamed_DMM.wpt: coordinates are changed to DDM format
 
 **3. 20230704_wpt_to_gfp.py** 
+
 Converts the information to a flightplan which is readable by Garmin
     - input: iii_sitename_user_renamed_DMM.wpt
     - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
       
 **Summary:**
-input: iii_sitename_user.wpt:
+
+input: iii_sitename_user.wpt
+
 output:
 - iii_sitename_user_renamed.wpt
 - iii_sitename_user_renamed_DMM.wpt
@@ -125,29 +130,38 @@ examples:
 
 
 ## 02_CombineWPT.py
+
 Combines all iii_sitename_user_renamed.wpt files within a directory to one final user.wpt.
 This user.wpt file is the import file for the Garmin user wpt import. This information containes the names for specific coordinates (here in decimal degree format). The iii_sitename_fpl.gfp file only containes the sequence of the different coordinates and extracts their names from this user.wpt file.
 The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
 
 **Summary:**
+
 input: path to directory of all relevant iii_sitename_user_renamed.wpt of the day
+
 output: user.wpt
 
 
 ## 03_BBox_creator.py - optional
+
 Script adds a bounding box with ~2 miles around target area. This information can be useful for the pilot for flight planning
 
 **Summary:**
+
 input: iii_sitename_user_renamed.wpt
+
 output: iii_sitename_user_renamed_BBox.wpt
 
 example:
 - [`052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt)
 
 ## 04_track_from_userwpt.py - optional
+
 based on the final user.wpt this script creates a Track.txt file in the format needed for aircraft data acquisition.
 
 **Summary:**
+
 input: user.wpt
+
 output: Track.txt
 
