@@ -4,6 +4,12 @@ import sys
 import glob
 import numpy as np
 
+'''
+Script adds a bounding box with ~2 miles around target area. This information can be useful for the pilot for flight planning
+input:iii_sitename_user_renamed.wpt
+output:iii_sitename_user_renamed_BBox.wpt
+'''
+
 def decimal_degrees_to_ddm(decimal_degrees):
     '''
      function to calculate decimal degrees to decimal minutes
@@ -28,7 +34,9 @@ def convert2stringLon(val):
     return('{:1}{:02d}°{:04.1f}\''.format(EastWest,deg,min))
 
 def convert2stringLat(val):
-    #function to convert Latitude to string with S/N indicator and d/m as deg and minute sign
+    '''
+    function to convert Latitude to string with S/N indicator and d/m as deg and minute sign
+    '''
     deg = val[0]
     min = val[1]
     if deg<0:
@@ -39,15 +47,11 @@ def convert2stringLat(val):
         NorthSouth = 'N'
     return('{:1}{:02d}°{:04.1f}\''.format(NorthSouth,deg,min))
 
-
-
-#for fname in fnames:
 def BBoxCeator(fname):
     f = pd.read_csv(fname)
 
     corners = [min(f.iloc[:,2]), max(f.iloc[:,2]), min(f.iloc[:,3]), max(f.iloc[:,3])]
                 # minLat, maxLat, minLon, maxLon
-
 
     '''
     Latitude: each minute is approx 1 mile: [+2,-2] for minutes of maxLat and minLat
