@@ -72,24 +72,51 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
 3. TODO: Update, once final.
 
 More notes:
-The script `01_xxx` reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
-Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. 
-If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.
-When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints
-and creating unique IDs and comments.
-Currently, this is done via the script xxx. It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
-the NAME of the original '*_user.wpt' file. We therefore suggest the following naming conventions for missions:
+## The script 01_create_gfp_from_userwpt.py
+reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
 
-004_some-name --> 004 being the internally given ID.
-The following files should then ideally be named like this:
+it is based on these steps:
+   - 20230704_WPnameChanger.py:
+     Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
+This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
+the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
-- MACS-MissionPlanner file: 004_some-name.xml
-- user waypoint file: 004_some-name_user.wpt (export via MACS-MissionPlanner)
-- geojson (if desired): 004_some-name.geojson (export via MACS-MissionPlanner)
+iii_sitename_user.wpt --> iii being an internally discussed 3 digit ID of the target area.
 
-If you adhere to this naming scheme, the scripts will generate the following files:
+In case you are working with the MACS Mission Planner, the following files should then ideally be named like this with and exemplary ID 004:
 
-- 004_some-name_user_renamed.wpt
-- 004_some-name_user_renamed_DMM.wpt
-- 004_some-name_user_renamed_BBox.wpt
-- Flightplan ready to import into GTN750: 004_some-name_fpl.gfp
+- MACS-MissionPlanner file: 004_sitename.xml
+- user waypoint file: 004_sitename_user.wpt (export via MACS-MissionPlanner)
+- geojson (if desired): 004_sitename.geojson (export via MACS-MissionPlanner)
+
+The WPNameChanger also detects route Types:
+Please stick to the following waypoint naming conventions when not working with the MACS Mission planner
+            'grid' for gridded flightmisison, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc)
+            'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
+The waypoint comments will changed to iiiSITENAMEO:  iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
+output: iii_sitename_user_renamed.wpt
+
+- 20230704_DEC2DMM.py: Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
+    - input: the output file of 20230704_WPnameChange.py:  iii_sitename_user_renamed.wpt
+    - output: iii_sitename_user_renamed_DMM.wpt: coordinates are changed to DDM format
+
+- 20230704_wpt_to_gfp.py: Converts the information to a flightplan which is readable by Garmin
+    - input: iii_sitename_user_renamed_DMM.wpt
+    - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin 
+**Summary on output:**
+Running this script returns folloing outputs for
+input: 004_sitename_user.wpt:
+
+- 004_sitename_user_renamed.wpt
+- 004_sitename_user_renamed_DMM.wpt
+- 004_some-name_fpl.gfp
+- 
+## The script 02_create_gfp_from_userwpt.py
+
+    Latitude: each minute is approx 1 mile: [+2,-2] for minutes of maxLat and minLat
+    Longitute at Lat 68: apporximately 3 minutes correspond to 2 km --> [+3,-3] for minutes of maxLon, minLon
+
+**Summary on output:**
+input: 004_sitename_user_renamed.wpt
+output: 004_sitename_user_renamed_BBox.wpt
+
