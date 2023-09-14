@@ -44,7 +44,7 @@ def convert2stringLat(val):
         NorthSouth = 'N'
     return('{:1}{:02d}d{:04.1f}m'.format(NorthSouth,deg,min))
 
-def dec2dmm(fname):
+def dec2ddm(fname):
     '''
     function to read in wpt file as exported by MACS, converts DECDeg to DMM, and saves it back
     output: Same as input with DECDeg will be in DDM
@@ -63,4 +63,4 @@ def dec2dmm(fname):
 
 if __name__ == '__main__':
     fname = sys.argv[1]
-    dec2dmm(fname)
+    dec2ddm(fname)
