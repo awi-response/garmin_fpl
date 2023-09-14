@@ -69,7 +69,6 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
 ![alt text](figs/macs-missionplanner_052.png)
 2. File > Export > Garmin GTN Waypoint > Save as ["052_DeltaNorthHF_01_1000m_user.wpt"](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user.wpt)
    - As a requirement for our scripts, there should be a 3-digit-ID (here: "052") in the beginning and "_user" at the end of this file name.
-3. TODO: Update, once final.
 
 # The Scripts:
 ## 01_create_gfp_from_userwpt.py
@@ -78,7 +77,8 @@ reads all `*_user.wpt`-files in a directory and creates a flightplan for each of
 it is based on these steps:
 
 **1. 20230704_WPnameChanger.py:**
-Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
+Background: Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named FLll_A/FLll_B (ll being linenumber) e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file. The comments are based on the names visible in this upper left panel. Careful, this comments do not change the order of the flightlines. The waypoint name (FLll_A/FLll_B) is automatically derived by the **display** order of the flightlines.  HENCE: when exporting the mission, the IDs will start at FL01_A, independent on changed or adapted names. Make sure to order the lines correspondingly in the MACS mission planner so the displayed order matches the order of flightlines. When importing many different targets into the GTN, the identical naming of lightlines will become very confusing. It complicates the communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
+
 This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
 the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
@@ -91,9 +91,10 @@ In case you are working with the MACS Mission Planner, the following files shoul
 - geojson (if desired): 004_sitename.geojson (export via MACS-MissionPlanner)
 
 The WPNameChanger also detects transect or grid as route Types depending in the waypoint name.
-Please stick to the following waypoint naming conventions when not working with the MACS Mission planner
-            'grid' for gridded flightmission, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc, eg. FL01_A)
-            'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
+Please stick to the following waypoint naming conventions when not working with the MACS Mission planner:
+            - 'grid' for gridded flightmission, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc, eg. FL01_A)
+            - 'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
+            
 The waypoint comments will changed to: 
 ***iiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
