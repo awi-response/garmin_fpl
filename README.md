@@ -82,7 +82,7 @@ Background: Originally, when exported from MACS-MissionPlanner (vXX.XX), the way
 
 This script does that job for you: It creates an intermediate file ('* _user_renamed.wpt') for each mission, where the ID and comment are updated based on the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
-***iii_sitename_user.wpt*** --> iii being an internally discussed 3 digit ID of the target area.
+**iii_sitename_user.wpt** --> iii being an internally discussed 3 digit ID of the target area.
 
 In case you are working with the MACS Mission Planner, the following files should then ideally be named like this with and exemplary ID 004:
 
@@ -98,7 +98,7 @@ Please stick to the following waypoint naming conventions when not working with 
             
 The waypoint comments will changed to: 
 
-***iiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
+**iiiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
 input: iii_sitename_user.wpt
 
