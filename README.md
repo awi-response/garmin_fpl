@@ -81,7 +81,7 @@ it is based on these steps:
 This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
 the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
-iii_sitename_user.wpt --> iii being an internally discussed 3 digit ID of the target area.
+***iii_sitename_user.wpt*** --> iii being an internally discussed 3 digit ID of the target area.
 
 In case you are working with the MACS Mission Planner, the following files should then ideally be named like this with and exemplary ID 004:
 
