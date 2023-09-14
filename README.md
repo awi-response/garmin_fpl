@@ -171,3 +171,6 @@ input: user.wpt
 
 output: Track.txt
 
+![Pipeline](https://github.com/awi-response/garmin_fpl/assets/141745019/3de4b83f-aa9a-47ed-9d18-3b7348bfe053)
+
+
