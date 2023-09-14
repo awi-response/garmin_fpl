@@ -71,13 +71,13 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
    - As a requirement for our scripts, there should be a 3-digit-ID (here: "052") in the beginning and "_user" at the end of this file name.
 3. TODO: Update, once final.
 
-More notes:
-## The script 01_create_gfp_from_userwpt.py
+# The Scripts:
+## 01_create_gfp_from_userwpt.py
 reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
 
 it is based on these steps:
-   - 20230704_WPnameChanger.py:
-     Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
+**1. 20230704_WPnameChanger.py:**
+Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
 This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
 the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
@@ -103,20 +103,30 @@ output: iii_sitename_user_renamed.wpt
 - 20230704_wpt_to_gfp.py: Converts the information to a flightplan which is readable by Garmin
     - input: iii_sitename_user_renamed_DMM.wpt
     - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin 
-**Summary on output:**
-Running this script returns folloing outputs for
-input: 004_sitename_user.wpt:
+**Summary:**
+input: iii_sitename_user.wpt:
+output:
+- iii_sitename_user_renamed.wpt
+- iii_sitename_user_renamed_DMM.wpt
+- iii_sitename_fpl.gfp
+  
+## 02_CombineWPT.py
+Combines all iii_sitename_user_renamed.wpt files within a directory to one final user.wpt.
+This user.wpt file is the import file for the Garmin user wpt import. This information containes the names for specific coordinates (here in decimal degree format). The iii_sitename_fpl.gfp file only containes the sequence of the different coordinates and extracts their names from this user.wpt file.
+The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
+**Summary:**
+input: path to directory of all relevant iii_sitename_user_renamed.wpt of the day
+output: user.wpt
 
-- 004_sitename_user_renamed.wpt
-- 004_sitename_user_renamed_DMM.wpt
-- 004_some-name_fpl.gfp
-- 
-## The script 02_create_gfp_from_userwpt.py
+## 03_BBox_creator.py - optional
+Script adds a bounding box with ~2 miles around target area. This information can be useful for the pilot for flight planning
+**Summary:**
+input: iii_sitename_user_renamed.wpt
+output: iii_sitename_user_renamed_BBox.wpt
 
-    Latitude: each minute is approx 1 mile: [+2,-2] for minutes of maxLat and minLat
-    Longitute at Lat 68: apporximately 3 minutes correspond to 2 km --> [+3,-3] for minutes of maxLon, minLon
-
-**Summary on output:**
-input: 004_sitename_user_renamed.wpt
-output: 004_sitename_user_renamed_BBox.wpt
+## 04_track_from_userwpt.py - optional
+based on the final user.wpt this script creates a Track.txt file in the format needed for aircraft data acquisition.
+**Summary:**
+input: user.wpt
+output: Track.txt
 
