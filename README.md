@@ -92,26 +92,32 @@ In case you are working with the MACS Mission Planner, the following files shoul
 
 The WPNameChanger also detects transect or grid as route Types depending in the waypoint name.
 Please stick to the following waypoint naming conventions when not working with the MACS Mission planner:
-            - 'grid' for gridded flightmission, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc, eg. FL01_A)
-            - 'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
+
+- 'grid' for gridded flightmission, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc, eg. FL01_A)
+- 'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
             
 The waypoint comments will changed to: 
 
 ***iiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
 input: iii_sitename_user.wpt
+
 output: iii_sitename_user_renamed.wpt
 
 **2. 20230704_DEC2DMM.py**: 
 
 Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
+
     - input: the output file of 20230704_WPnameChange.py:  iii_sitename_user_renamed.wpt
+    
     - output: iii_sitename_user_renamed_DMM.wpt: coordinates are changed to DDM format
 
 **3. 20230704_wpt_to_gfp.py** 
 
 Converts the information to a flightplan which is readable by Garmin
+
     - input: iii_sitename_user_renamed_DMM.wpt
+    
     - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
       
 **Summary:**
