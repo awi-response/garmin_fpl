@@ -43,7 +43,7 @@ Some practical implications of this issue:
 
 For the GTN750 to be able to read prepared flightplans, they must fulfil certain (format) requirements:
 - stored as .gfp (Garmin flightplan)
-- coordinates must be in DMM format
+- coordinates must be in DDM format
 - Syntax is the following:
   FPN/RI:F:N67302W133469:F:N67261W133470:F:N67260W133449:F:N67302W133448
   - always start with 'FPN/RI'
@@ -53,7 +53,7 @@ For the GTN750 to be able to read prepared flightplans, they must fulfil certain
      - Lon prefaced with E or W; followed by exactly six digits in DMM: 133° 46.9' W becomes W133469
 - .gfp-file is allowed to have only one line! The entire flightplan needs to be in this long line. Make sure, there is no empty new line.
 - NOTE: For us, the import of a .gfp-file created on a unix operating system failed, only Windows worked. (Line ending problem?)
-- You can have multiple .gfp-files (each correesponding to a different flightplan), or you can combine all your waypoints into one large flightplan. (For grid-survey flights, we had a flightplan per target of interest.)
+- You can have multiple .gfp-files (each corresponding to a different flightplan), or you can combine all your waypoints into one large flightplan. (For grid-survey flights, we had a flightplan per target of interest.)
 - all .gfp-files need to be collected in one folder named 'FPL'
 - The GTN750 can store up to 100 flightplans (?) --> this needs to be verified.
 - there are possibilities to add more complex information to the flightplan (e.g., airports, runways, landing approaches, etc... --> see manual), but this is generally not necessary. (the simpler, the better ;) )
@@ -62,7 +62,7 @@ For the GTN750 to be able to read prepared flightplans, they must fulfil certain
 If you want to avoid this, make sure that the user waypoints are imported before the flightplans are (the .gfp-files).**
 
 # How to create flightplans for the GTN750
-The main gist of the code presented here, is the automated creation of said .gfp-files from the `user.wpt`s.
+The main goal of the code presented here is the automated creation of said .gfp-files from the `user.wpt`s.
 
 If you are using the MACS-Missionplanner to prepare your flightplans, you should follow these steps:
 1. create/open your flightplan in the [MACS-Missionplanner Software by DLR](https://macs.dlr.de/box)
@@ -76,6 +76,7 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
 reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
 
 it is based on these steps:
+
 **1. 20230704_WPnameChanger.py:**
 Originally, when exported from MACS-MissionPlanner (vXX.XX), the waypoint-IDs are named e.g., 'FL02_A' or FL05_B', numbered consecutively in the order they were in the MACS-MissionPlanner .xml-file.(TODO @Tabea: explain this better). And the comments are based on the names visible in this upper left panel. If you do not change the order of the flightlines, the IDs and comments should be in the same numbering order. HOWEVER: for each mission, the IDs will start at FL01_A again.When importing many waypoints into the GTN, this will become very confusing, and complicate communication with the pilots. We therefore recommend renaming the waypoints and creating unique IDs and comments.
 This script does that job for you: It creates an intermediate file ('*_user_renamed.wpt') for each mission, where the ID and comment are updated based on 
@@ -89,43 +90,62 @@ In case you are working with the MACS Mission Planner, the following files shoul
 - user waypoint file: 004_sitename_user.wpt (export via MACS-MissionPlanner)
 - geojson (if desired): 004_sitename.geojson (export via MACS-MissionPlanner)
 
-The WPNameChanger also detects route Types:
+The WPNameChanger also detects transect or grid as route Types depending in the waypoint name.
 Please stick to the following waypoint naming conventions when not working with the MACS Mission planner
-            'grid' for gridded flightmisison, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc)
+            'grid' for gridded flightmission, waypoint name requirement: FLll_A or FLll_B (ll stands for line number 01,02 etc, eg. FL01_A)
             'transect' for a routing flightmission, waypoint name requirement: iii## (iii for ID code, ## for wapoint number, e.g 00101,00102,00103)
-The waypoint comments will changed to iiiSITENAMEO:  iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
+The waypoint comments will changed to: 
+***iiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
+
+input: iii_sitename_user.wpt
 output: iii_sitename_user_renamed.wpt
 
-- 20230704_DEC2DMM.py: Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
+**2. 20230704_DEC2DMM.py**: 
+Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
     - input: the output file of 20230704_WPnameChange.py:  iii_sitename_user_renamed.wpt
     - output: iii_sitename_user_renamed_DMM.wpt: coordinates are changed to DDM format
 
-- 20230704_wpt_to_gfp.py: Converts the information to a flightplan which is readable by Garmin
+**3. 20230704_wpt_to_gfp.py** 
+Converts the information to a flightplan which is readable by Garmin
     - input: iii_sitename_user_renamed_DMM.wpt
-    - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin 
+    - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
+      
 **Summary:**
 input: iii_sitename_user.wpt:
 output:
 - iii_sitename_user_renamed.wpt
 - iii_sitename_user_renamed_DMM.wpt
 - iii_sitename_fpl.gfp
-  
+
+examples:
+- [`052_DeltaNorthHF_01_1000m_user_renamed.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed.wpt)
+- [`052_DeltaNorthHF_01_1000m_user_renamed_DMM.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed_DMM.wpt)
+- [`052_DeltaNorthHF_01_1000m_fpl.gfp`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_fpl.gfp)
+
+
 ## 02_CombineWPT.py
 Combines all iii_sitename_user_renamed.wpt files within a directory to one final user.wpt.
 This user.wpt file is the import file for the Garmin user wpt import. This information containes the names for specific coordinates (here in decimal degree format). The iii_sitename_fpl.gfp file only containes the sequence of the different coordinates and extracts their names from this user.wpt file.
 The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
+
 **Summary:**
 input: path to directory of all relevant iii_sitename_user_renamed.wpt of the day
 output: user.wpt
 
+
 ## 03_BBox_creator.py - optional
 Script adds a bounding box with ~2 miles around target area. This information can be useful for the pilot for flight planning
+
 **Summary:**
 input: iii_sitename_user_renamed.wpt
 output: iii_sitename_user_renamed_BBox.wpt
 
+example:
+- [`052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt)
+
 ## 04_track_from_userwpt.py - optional
 based on the final user.wpt this script creates a Track.txt file in the format needed for aircraft data acquisition.
+
 **Summary:**
 input: user.wpt
 output: Track.txt
