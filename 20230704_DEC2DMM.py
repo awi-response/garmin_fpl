@@ -49,7 +49,9 @@ def dec2ddm(fname):
     function to read in wpt file as exported by MACS, converts DECDeg to DMM, and saves it back
     output: Same as input with DECDeg will be in DDM
     '''
-    f = pd.read_csv(fname, header=None)
+    dtype_dict = {0: str, 1: str, 2: np.float64,3: np.float64}
+    f = pd.read_csv(fname, header=None,dtype = dtype_dict)
+    #f = pd.read_csv(fname, header=None)
 
     lat = list(map(decimal_degrees_to_ddm, f.iloc[:,2]))
     lon = list(map(decimal_degrees_to_ddm, f.iloc[:,3]))
