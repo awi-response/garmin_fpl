@@ -62,15 +62,33 @@ For the GTN750 to be able to read prepared flightplans, they must fulfil certain
 If you want to avoid this, make sure that the user waypoints are imported before the flightplans are (the .gfp-files).**
 
 # How to create flightplans for the GTN750
-The main goal of the code presented here is the automated creation of said .gfp-files from the `user.wpt`s.
+The main goal of the code presented here is the automated creation of said .gfp-files from the `user.wpt`.
 
 If you are using the MACS-Missionplanner to prepare your flightplans, you should follow these steps:
 1. create/open your flightplan in the [MACS-Missionplanner Software by DLR](https://macs.dlr.de/box)
 ![alt text](figs/macs-missionplanner_052.png)
 2. File > Export > Garmin GTN Waypoint > Save as ["052_DeltaNorthHF_01_1000m_user.wpt"](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user.wpt)
-   - As a requirement for our scripts, there should be a 3-digit-ID (here: "052") in the beginning and "_user" at the end of this file name.
+   - As a requirement for our scripts, please follow these naming requirements:
+     
+     **iii_sitename_rr_aaaam_user.wpt**: with iii being a 3-digit-ID, rr being the repetion counter of the site, aaaam being the altitude above ground in m
 
-# The Scripts:
+     example: 052_DeltaNorthHF_01_1000m_user.wpt
+
+If you are preparing a user.wpt file by yourself feel free to have a look at the files in the example_folder. In order to run the scripts, Be sure follow the naming conventions of waypoints and the user.wpt file:
+
+     **iii_sitename_rr_aaaam_user.wpt**: with iii being a 3-digit-ID, rr being the repetion counter of the site, aaaam being the altitude above ground in m
+
+     example: 052_DeltaNorthHF_01_1000m_user.wpt
+
+     FLll_A/FLll_B for grid flight patterns: ll being line number, A-B indicate the start/end of the line
+
+     iii## for transect flight patterns: iii being the 3-digit-ID, ## being the waypoint number
+
+     examples: FL01_A/FL01_B; 05201 
+
+     
+
+# The Scripts
 
 ![Pipeline](https://github.com/awi-response/garmin_fpl/assets/141745019/3de4b83f-aa9a-47ed-9d18-3b7348bfe053)
 
