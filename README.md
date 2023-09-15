@@ -121,9 +121,9 @@ The waypoint comments will changed to:
 
 **iiiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
-input: path to folder of iii_sitename_user.wpt files
+   - input: path to folder of iii_sitename_user.wpt files
 
-output: iii_sitename_rr_aaaam_user_renamed.wpt
+   - output: iii_sitename_rr_aaaam_user_renamed.wpt
 
 **2. 20230704_DEC2DMM.py**: 
 
@@ -143,12 +143,12 @@ Converts the information to a flightplan which is readable by Garmin
       
 **Summary:**
 
-input: path to folder of iii_sitename_user.wpt files
-
-output:
-- iii_sitename_rr_aaaam_user_renamed.wpt
-- iii_sitename_rr_aaaam_user_renamed_DMM.wpt
-- iii_sitename_rr_aaaam_fpl.gfp
+      -input: path to folder of iii_sitename_user.wpt files
+      
+      -output:
+         - iii_sitename_rr_aaaam_user_renamed.wpt
+         - iii_sitename_rr_aaaam_user_renamed_DMM.wpt
+         - iii_sitename_rr_aaaam_fpl.gfp
 
 examples:
 - [`052_DeltaNorthHF_01_1000m_user_renamed.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed.wpt)
@@ -164,9 +164,9 @@ The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
 
 **Summary:**
 
-input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
-
-output: user.wpt
+   - input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
+   
+   - output: user.wpt
 
 
 ## 03_BBox_creator.py - optional
@@ -175,9 +175,9 @@ Script adds a bounding box with ~2 miles around target area. This information ca
 
 **Summary:**
 
-input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
-
-output: iii_sitename_rr_aaaam_user_renamed_BBox.wpt
+      - input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
+      
+      - output: iii_sitename_rr_aaaam_user_renamed_BBox.wpt
 
 example:
 - [`052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt)
@@ -188,9 +188,9 @@ based on the final user.wpt this script creates a Track.txt file in the format n
 
 **Summary:**
 
-input: path to directory where user.wpt is stored (when not changed: path of the folder containing all *_user.wpt of the day)
-
-output: Track.txt
+   - input: path to directory where user.wpt is stored (when not changed: path of the folder containing all *_user.wpt of the day)
+   
+   - output: Track.txt
 
 **Example**:
 
