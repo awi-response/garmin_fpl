@@ -164,9 +164,9 @@ The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
 
 **Summary:**
 
-   - input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
-   
-   - output: user.wpt
+      - input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
+      
+      - output: user.wpt
 
 
 ## 03_BBox_creator.py - optional
