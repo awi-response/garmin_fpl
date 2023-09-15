@@ -100,7 +100,7 @@ The waypoint comments will changed to:
 
 **iiiSITENAMEO** iii being the 3 digit ID, SITENAME an uppercase letter of the targetname, O the order (A/B) in case of a grid type. The script makes sure that the comment is not longer that 25 digits. In case the combination results in more than 25 digits, only the fist 8 and last 7 letters of the sitename will be used.
 
-input: iii_sitename_user.wpt
+input: path to folder of iii_sitename_user.wpt files
 
 output: iii_sitename_user_renamed.wpt
 
