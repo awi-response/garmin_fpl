@@ -179,6 +179,8 @@ output: Track.txt
       - cd C:\Users\path-to-flightplanning-tool\garmin_fpl-GTN750_flightplanning\
       - python 01_create_gfp_from_userwpt.pyf C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       - python 02_CombineWPT.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
+      - python 03_BBox_creator.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
+      - C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       
 
 
