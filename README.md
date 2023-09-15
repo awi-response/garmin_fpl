@@ -71,6 +71,9 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
    - As a requirement for our scripts, there should be a 3-digit-ID (here: "052") in the beginning and "_user" at the end of this file name.
 
 # The Scripts:
+
+![Pipeline](https://github.com/awi-response/garmin_fpl/assets/141745019/3de4b83f-aa9a-47ed-9d18-3b7348bfe053)
+
 ## 01_create_gfp_from_userwpt.py
 reads all `*_user.wpt`-files in a directory and creates a flightplan for each of them. The new name is then `*_fpl.gfp`.
 
@@ -171,6 +174,12 @@ input: user.wpt
 
 output: Track.txt
 
-![Pipeline](https://github.com/awi-response/garmin_fpl/assets/141745019/3de4b83f-aa9a-47ed-9d18-3b7348bfe053)
+**Example**:
+
+      - cd C:\Users\path-to-flightplanning-tool\garmin_fpl-GTN750_flightplanning\
+      - python 01_create_gfp_from_userwpt.pyf C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
+      - python 02_CombineWPT.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
+      
+
 
 
