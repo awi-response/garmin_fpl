@@ -76,15 +76,15 @@ If you are using the MACS-Missionplanner to prepare your flightplans, you should
 
 If you are preparing a user.wpt file by yourself feel free to have a look at the files in the example_folder. In order to run the scripts, Be sure follow the naming conventions of waypoints and the user.wpt file:
 
-  **iii_sitename_rr_aaaam_user.wpt**: with iii being a 3-digit-ID, rr being the repetion counter of the site, aaaam being the altitude above ground in m
+**iii_sitename_rr_aaaam_user.wpt**: with iii being a 3-digit-ID, rr being the repetion counter of the site, aaaam being the altitude above ground in m
 
-  example: 052_DeltaNorthHF_01_1000m_user.wpt
+example: 052_DeltaNorthHF_01_1000m_user.wpt
 
-  FLll_A/FLll_B for grid flight patterns: ll being line number, A-B indicate the start/end of the line
+FLll_A/FLll_B for grid flight patterns: ll being line number, A-B indicate the start/end of the line
 
-  iii## for transect flight patterns: iii being the 3-digit-ID, ## being the waypoint number
+iii## for transect flight patterns: iii being the 3-digit-ID, ## being the waypoint number
 
-  examples: FL01_A/FL01_B; 05201 
+examples: FL01_A/FL01_B; 05201 
 
      
 
