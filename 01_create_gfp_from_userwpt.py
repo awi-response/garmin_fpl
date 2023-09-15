@@ -34,4 +34,4 @@ for file in glob.glob(f"{folder}\*_user.wpt"):
     print(target)
     os.system(f'python 20230704_WPnameChanger.py {target}_user.wpt')
     os.system(f'python 20230704_DEC2DMM.py {target}_user_renamed.wpt')
-    os.system(f'python 20230704_wpt_to_gfp.py {target}_user_renamed_DMM.wpt {target}_fpl.gfp')
+    os.system(f'python 20230704_wpt_to_gfp.py {target}_user_renamed_DDM.wpt {target}_fpl.gfp')
