@@ -6,7 +6,7 @@ def convert_wpt_to_gfp(input_file, output_file):
     Parameters
     ----------
     input_file : str
-        Path to the "*_user_renamed_DMM.wpt" file
+        Path to the "*_user_renamed_DDM.wpt" file
     output_file : str
         New path under which the .gfp-file should be stored
         Recommendation: "{target}_fpl.gfp"
