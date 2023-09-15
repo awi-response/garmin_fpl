@@ -18,9 +18,10 @@ def combineWPT(directory):
     def get_df():
         # list of files
         df=pd.DataFrame()
+        dtype_dict = {0: str, 1: str, 2: np.float64,3: np.float64}
         for file in wpts:
-                f=pd.read_csv(file, header=None)
-                df=df.append(f)
+                f=pd.read_csv(file, header=None,dtype = dtype_dict)
+                df=pd.concat([df,f])
         return df
 
     df = get_df()
