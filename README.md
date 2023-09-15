@@ -85,13 +85,13 @@ Background: Originally, when exported from MACS-MissionPlanner (vXX.XX), the way
 
 This script does that job for you: It creates an intermediate file ('* _user_renamed.wpt') for each mission, where the ID and comment are updated based on the NAME of the original '*_user.wpt' file. We therefore require the following file naming conventions for missions:
 
-**iii_sitename_user.wpt** --> iii being an internally discussed 3 digit ID of the target area.
+**iii_sitename_rr_aaaam_user.wpt** --> iii being an internally discussed 3 digit ID of the target area, rr the repetition of the area (01,02), aaaa the above ground altitude in m (e.g. 0750m).
 
 In case you are working with the MACS Mission Planner, the following files should then ideally be named like this with and exemplary ID 004:
 
-- MACS-MissionPlanner file: 004_sitename.xml
-- user waypoint file: 004_sitename_user.wpt (export via MACS-MissionPlanner)
-- geojson (if desired): 004_sitename.geojson (export via MACS-MissionPlanner)
+- MACS-MissionPlanner file: 004_sitename_01_1000m.xml
+- user waypoint file: 004_sitename_01_1000m_user.wpt (export via MACS-MissionPlanner)
+- geojson (if desired): 004_sitename_01_1000m.geojson (export via MACS-MissionPlanner)
 
 The WPNameChanger also detects transect or grid as route Types depending in the waypoint name.
 Please stick to the following waypoint naming conventions when not working with the MACS Mission planner:
@@ -105,32 +105,32 @@ The waypoint comments will changed to:
 
 input: path to folder of iii_sitename_user.wpt files
 
-output: iii_sitename_user_renamed.wpt
+output: iii_sitename_rr_aaaam_user_renamed.wpt
 
 **2. 20230704_DEC2DMM.py**: 
 
 Converts Decimal degree coordinates to Degree Decimal Minutes coordinates
 
-    - input: the output file of 20230704_WPnameChange.py:  iii_sitename_user_renamed.wpt
+    - input: the output file of 20230704_WPnameChange.py:  iii_sitename_rr_aaaam_user_renamed.wpt
     
-    - output: iii_sitename_user_renamed_DMM.wpt: coordinates are changed to DDM format
+    - output: iii_sitename_rr_aaaam_user_renamed_DMM.wpt: coordinates are changed to DDM format
 
 **3. 20230704_wpt_to_gfp.py** 
 
 Converts the information to a flightplan which is readable by Garmin
 
-    - input: iii_sitename_user_renamed_DMM.wpt
+    - input: iii_sitename_rr_aaaam_user_renamed_DMM.wpt
     
-    - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
+    - output: returns a iii_sitename_rr_aaaam_flp.gfp file which can be imported to the Garmin
       
 **Summary:**
 
-input: iii_sitename_user.wpt
+input: path to folder of iii_sitename_user.wpt files
 
 output:
-- iii_sitename_user_renamed.wpt
-- iii_sitename_user_renamed_DMM.wpt
-- iii_sitename_fpl.gfp
+- iii_sitename_rr_aaaam_user_renamed.wpt
+- iii_sitename_rr_aaaam_user_renamed_DMM.wpt
+- iii_sitename_rr_aaaam_fpl.gfp
 
 examples:
 - [`052_DeltaNorthHF_01_1000m_user_renamed.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed.wpt)
@@ -146,7 +146,7 @@ The user.wpt file will be stored in the same folder as all iii_sitename_user.wpt
 
 **Summary:**
 
-input: path to directory of all relevant iii_sitename_user_renamed.wpt of the day
+input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
 
 output: user.wpt
 
@@ -157,9 +157,9 @@ Script adds a bounding box with ~2 miles around target area. This information ca
 
 **Summary:**
 
-input: iii_sitename_user_renamed.wpt
+input: path to directory of all relevant iii_sitename_rr_aaaam_user_renamed.wpt of the day (when not changed: path of the folder containing all *_user.wpt of the day)
 
-output: iii_sitename_user_renamed_BBox.wpt
+output: iii_sitename_rr_aaaam_user_renamed_BBox.wpt
 
 example:
 - [`052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt`](https://github.com/awi-response/garmin_fpl/blob/GTN750_flightplanning/example_project/052_DeltaNorthHF_01_1000m_user_renamed_BBox.wpt)
@@ -170,7 +170,7 @@ based on the final user.wpt this script creates a Track.txt file in the format n
 
 **Summary:**
 
-input: user.wpt
+input: path to directory where user.wpt is stored (when not changed: path of the folder containing all *_user.wpt of the day)
 
 output: Track.txt
 
@@ -180,7 +180,7 @@ output: Track.txt
       - python 01_create_gfp_from_userwpt.pyf C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       - python 02_CombineWPT.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       - python 03_BBox_creator.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
-      - C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
+      - python 04_track_from_userwpt.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       
 
 
