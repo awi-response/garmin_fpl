@@ -187,12 +187,12 @@ example:
 based on the final user.wpt this script creates a Track.txt file in the format needed for aircraft data acquisition.
 
 **Summary:**
-
-   - input: path to directory where user.wpt is stored (when not changed: path of the folder containing all *_user.wpt of the day)
    
-   - output: Track.txt
+      - input: path to directory where user.wpt is stored (when not changed: path of the folder containing all *_user.wpt of the day)
+      
+      - output: Track.txt
 
-**Example**:
+**Example to run the code**:
 
       - cd C:\Users\path-to-flightplanning-tool\garmin_fpl-GTN750_flightplanning\
       - python 01_create_gfp_from_userwpt.pyf C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
