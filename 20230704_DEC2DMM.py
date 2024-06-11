@@ -28,7 +28,7 @@ def convert2stringLon(val):
         deg = abs(deg) # remove minus sign
     else:
         EastWest = 'E'
-    return('{:1}{:02d}d{:04.1f}m'.format(EastWest,deg,min))
+    return('{:1}{:03d}d{:04.1f}m'.format(EastWest,deg,min))
 
 def convert2stringLat(val):
     '''
