@@ -1,6 +1,7 @@
 import os 
 import sys
 import glob
+from pathlib import Path
 
 folder = sys.argv[1]
 
@@ -29,9 +30,18 @@ output:
     - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
 '''
 
+renamed_user_wpt = []
 for file in glob.glob(f"{folder}\*_user.wpt"):
     target = file[:-9]
+    target_name = Path(file).name[:-9]
     print(target)
+    print(target_name)
+    fpl_dir = Path(folder) / 'FPL'
+    os.makedirs(fpl_dir, exist_ok=True)
+    # Script 1: rename waypoints
     os.system(f'python 20230704_WPnameChanger.py {target}_user.wpt')
+    # Script 2: change coordinate format
     os.system(f'python 20230704_DEC2DMM.py {target}_user_renamed.wpt')
-    os.system(f'python 20230704_wpt_to_gfp.py {target}_user_renamed_DDM.wpt {target}_fpl.gfp')
+    # Script 3: create flightplans
+    outfile = fpl_dir / f'{target_name}_fpl.gfp'
+    os.system(f'python 20230704_wpt_to_gfp.py {target}_user_renamed_DDM.wpt {outfile}')

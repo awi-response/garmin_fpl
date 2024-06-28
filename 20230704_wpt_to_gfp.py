@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 def convert_wpt_to_gfp(input_file, output_file):
     """Create a flightplan from an ordered list of user waypoints.
@@ -31,6 +32,6 @@ def convert_wpt_to_gfp(input_file, output_file):
         f.write(output_content)
 
 if __name__ == "__main__":
-    user_wpt = sys.argv[1]
-    flp_gfp = sys.argv[2]
+    user_wpt = Path(sys.argv[1])
+    flp_gfp = (sys.argv[2])
     convert_wpt_to_gfp(user_wpt, flp_gfp)
