@@ -30,18 +30,23 @@ output:
     - output: returns a iii_sitename_flp.gfp file which can be imported to the Garmin
 '''
 
-renamed_user_wpt = []
+renamed_user_wpt_list = []
 for file in glob.glob(f"{folder}\*_user.wpt"):
     target = file[:-9]
     target_name = Path(file).name[:-9]
     print(target)
     print(target_name)
-    fpl_dir = Path(folder) / 'FPL'
-    os.makedirs(fpl_dir, exist_ok=True)
+
+    
     # Script 1: rename waypoints
     os.system(f'python 20230704_WPnameChanger.py {target}_user.wpt')
+    
     # Script 2: change coordinate format
-    os.system(f'python 20230704_DEC2DMM.py {target}_user_renamed.wpt')
+    renamed_user_wpt = f'{target}_user_renamed.wpt'
+    os.system(f'python 20230704_DEC2DMM.py {renamed_user_wpt}')
+    
     # Script 3: create flightplans
+    fpl_dir = Path(folder) / 'FPL'
+    os.makedirs(fpl_dir, exist_ok=True)
     outfile = fpl_dir / f'{target_name}_fpl.gfp'
     os.system(f'python 20230704_wpt_to_gfp.py {target}_user_renamed_DDM.wpt {outfile}')
