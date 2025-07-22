@@ -201,5 +201,32 @@ based on the final user.wpt this script creates a Track.txt file in the format n
       - python 04_track_from_userwpt.py C:\Users\path-to-folder-of-user.wpts-of-the-day\example_project
       
 
+## Create line and point geometries from GPS track file from AWI Aircraft DMS
+
+### File example
+
+```
+YYYY/MM/DD	HH:mm:ss	[B835 ADAS] GPS1	[B835 ADAS] GPS1	[B835 ADAS] GPS1
+		Lat	Lon	Altitude
+		Spot	Spot	Spot
+		deg	deg	
+2025/07/21	15:52:07,000000	6818,307800	13330,001300	60,70
+2025/07/21	15:52:08,000000	6818,307800	13330,001300	60,75
+2025/07/21	15:52:09,000000	6818,307800	13330,001300	60,80
+2025/07/21	15:52:10,000000	6818,307800	13330,001300	60,82
+2025/07/21	15:52:11,000000	6818,307800	13330,001300	60,85
+...
+```
+
+### Code execution
+
+`python extract_data_from_GPSlog.py --gps_file 2507211202_GPS.dat`
+
+### Output
+
+```
+2507211202_GPS_line.gpkg
+2507211202_GPS_points.gpkg
+```
 
 
