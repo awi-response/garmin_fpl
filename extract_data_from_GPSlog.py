@@ -7,6 +7,11 @@ import pandas as pd
 from shapely.geometry import LineString, Point
 
 
+def parse_col_from_header(input_file):
+    with open(input_file) as src:
+        out = src.readlines()
+    return [col.replace('\n', '') for col in out[1].split('\t') if col != '']
+
 def main():
     # Create the parser
     parser = argparse.ArgumentParser(
@@ -32,8 +37,11 @@ def main():
         input_file, sep=r"\t", decimal=",", engine="python", skiprows=4, header=None
     )
 
+    cols = parse_col_from_header(input_file)
+    
     # Assign meaningful column names for easier access.
-    df.columns = ["Date", "Time", "Lat_DDM", "Lon_DDM", "Altitude"]
+    # df.columns = ["Date", "Time", "Lat_DDM", "Lon_DDM", "Altitude"]
+    df.columns = ["Date", "Time"] + cols
 
     # %%
     # Define a function to convert Degrees Decimal Minutes (DDM) to Decimal Degrees (DD).
@@ -57,11 +65,16 @@ def main():
         return decimal_degrees
 
     # Apply the conversion to Lat_DDM and Lon_DDM columns.
-    df["lon"] = df["Lat_DDM"].apply(lambda x: ddm_to_dd(x, "Lat"))
-    df["lat"] = df["Lon_DDM"].apply(lambda x: ddm_to_dd(x, "Lon"))
+    df["lat"] = df["Lat"].apply(lambda x: ddm_to_dd(x, "Lat"))
+    df["lon"] = df["Lon"].apply(lambda x: ddm_to_dd(x, "Lon"))
 
+
+    df.drop(columns=['Lon', 'Lat'], inplace=True)
+
+    # Create a new column 'geometry' with Point objects from latitude and longitude
+    # df['geometry'] = df.apply(lambda row: Point(row['lon'], row['lat']), axis=1)
     # Create Point geometries from lon and lat columns
-    geometry = [Point(xy) for xy in zip(df["lat"], df["lon"])]
+    geometry = [Point(xy) for xy in zip(df["lon"], df["lat"])]
 
     # Create a GeoDataFrame from the DataFrame and Point geometries
     gdf_point = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
