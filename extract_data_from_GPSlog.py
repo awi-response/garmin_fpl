@@ -10,7 +10,8 @@ from shapely.geometry import LineString, Point
 def parse_col_from_header(input_file):
     with open(input_file) as src:
         out = src.readlines()
-    return [col.replace('\n', '') for col in out[1].split('\t') if col != '']
+    return [col.replace("\n", "") for col in out[1].split("\t") if col != ""]
+
 
 def main():
     # Create the parser
@@ -26,6 +27,22 @@ def main():
         help="Path to the input GPS track file (e.g., 2507211202_GPS.dat)",
     )
 
+    # Add the --output_dir argument
+    parser.add_argument(
+        "--output_dir",
+        type=Path,
+        required=False,
+        help="specify specific output directory where to save the files",
+    )
+
+    # Add the --output_dir argument
+    parser.add_argument(
+        "--output_basename",
+        type=str,
+        required=False,
+        help="specify specific output directory where to save the files",
+    )
+
     # Parse the arguments
     args = parser.parse_args()
 
@@ -38,7 +55,7 @@ def main():
     )
 
     cols = parse_col_from_header(input_file)
-    
+
     # Assign meaningful column names for easier access.
     # df.columns = ["Date", "Time", "Lat_DDM", "Lon_DDM", "Altitude"]
     df.columns = ["Date", "Time"] + cols
@@ -68,8 +85,7 @@ def main():
     df["lat"] = df["Lat"].apply(lambda x: ddm_to_dd(x, "Lat"))
     df["lon"] = df["Lon"].apply(lambda x: ddm_to_dd(x, "Lon"))
 
-
-    df.drop(columns=['Lon', 'Lat'], inplace=True)
+    df.drop(columns=["Lon", "Lat"], inplace=True)
 
     # Create a new column 'geometry' with Point objects from latitude and longitude
     # df['geometry'] = df.apply(lambda row: Point(row['lon'], row['lat']), axis=1)
@@ -88,9 +104,20 @@ def main():
     # Create a new GeoDataFrame with the LineString geometry
     gdf_line = gpd.GeoDataFrame(geometry=line_series, crs=gdf_point.crs)
 
+    if not args.output_dir:
+        output_dir = Path(".")
+    else:
+        output_dir = Path(args.output_dir)
+    output_dir.mkdir(exist_ok=True, parents=True)
+
+    if not args.output_basename:
+        basename = input_file.stem
+    else:
+        basename = args.output_basename
+
     # Save the GeoDataFrames to GeoJSON files
-    gdf_point.to_file(input_file.stem + "_points.gpkg")
-    gdf_line.to_file(input_file.stem + "_line.gpkg")
+    gdf_point.to_file(output_dir / f"{basename}_points.gpkg")
+    gdf_line.to_file(output_dir / f"{basename}_line.gpkg")
 
 
 if __name__ == "__main__":
