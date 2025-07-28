@@ -220,7 +220,7 @@ YYYY/MM/DD	HH:mm:ss	[B835 ADAS] GPS1	[B835 ADAS] GPS1	[B835 ADAS] GPS1
 
 ### Code execution
 
-`python extract_data_from_GPSlog.py --gps_file 2507211202_GPS.dat`
+`python extract_data_from_GPSlog.py --gps_file 2507211202_GPS.dat [--output_dir output_dir] [--output_basename output_basename]`
 
 ### Output
 
